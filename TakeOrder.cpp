@@ -3,16 +3,17 @@
 #include <cstdlib>
 #include <json/value.h>
 #include <json/json.h>
+#include <ctime>
+#include "jsonFunctions.h"
+
 
 using namespace std;
 
-string menuPATH = "data/menu_settings.json";
-string testPATH = "data/billList.json";
 const int maxOrders = 10;
 int menuWidth = 40;
-int FoodID = 1;
-string menuHeader = " MENU ";
 int orderedFood[maxOrders];
+int FoodCounter = 0;
+string menuHeader = " MENU ";
 bool confirmRepeat = true;
 
 void menuEmptySpace() {
@@ -21,7 +22,6 @@ void menuEmptySpace() {
     for (int i = 0; i < menuWidth - 1; i++) emptyLine += " ";
     emptyLine += "|";
     emptyLine += "\n";
-
     cout << emptyLine;
 }
 
@@ -59,59 +59,32 @@ void createOrder() {
     cout << "Prosze podac numery id dan jakie maja zostac dodane do zamowienia," << endl
         << "wpisanie 0 spowoduje przejscie do nastepnego kroku." << endl;
     int keyPressed;
-    int FoodCounter = 0;
+    int OrderedFoodAmount = 0;
     for (int i = 0; i < maxOrders; i++) {
         cout << endl << "Prosze podac numer id dania: ";
         cin >> keyPressed;
-        if (keyPressed > FoodID || keyPressed < 0) {
+        if (keyPressed > FoodCounter || keyPressed < 0) {
             i--;
-            cout << "Masz do wyboru tylko " << FoodID << " dan";
+            cout << "Masz do wyboru tylko " << FoodCounter << " dan";
             continue;
         }
         if (keyPressed == 0) {
             break;
         }
         orderedFood[i] = keyPressed;
-        FoodCounter++;
+        OrderedFoodAmount++;
     }
-    cout << endl << "Wybrano lacznie " << FoodCounter << " dan:" << endl;
+    cout << endl << "Wybrano lacznie " << OrderedFoodAmount << " dan:" << endl;
 }
 
 void endofOrder() {
-    ifstream setupfile(testPATH);
-    if (!setupfile.is_open()) {
-        ofstream newsetupfile(testPATH);
-        newsetupfile << "{" << '"' << "Bills" << '"' << ":" << "[" << "]" << "}";
-        newsetupfile.close();
-        setupfile.open(testPATH);
-    }
-    Json::Reader reader;
-    Json::Value root;
-    Json::StyledStreamWriter writer;
-    bool parsingSuccessful = reader.parse(setupfile, root);
-    if (!parsingSuccessful)
-    {
-        cout << endl << "File not found";
-    }
-    setupfile.close();
+    writeToHistoryFile(orderedFood, maxOrders, FoodCounter);
+    //clearing array after all operations
+    for (int i = 0; i < maxOrders; i++) orderedFood[i] = NULL;
 }
 
 void orderList() {
-    ifstream menufile(menuPATH);
-    if (!menufile.is_open()) {
-        ofstream newsetupfile(menuPATH);
-        newsetupfile << 'a'; //Zrobic to
-        newsetupfile.close();
-        menufile.open(menuPATH);
-    }
-    Json::Reader reader;
-    Json::Value root;
-    bool parsingSuccessful = reader.parse(menufile, root);
-    if (!parsingSuccessful)
-    {
-        cout << endl << "File not found";
-    }
-    Json::Value food = root["Food"];
+    Json::Value food = readFromFile(menuPATH)["Food"];
     float Sum = 0;
     int FoodNumber = 1;
     int count = 0;
@@ -125,7 +98,7 @@ void orderList() {
             cout << " x" << count << " = " << count * food[FoodNumber - 1]["price"].asFloat() << endl;
             Sum += count * food[FoodNumber - 1]["price"].asFloat();
         }
-        if (f + 1 == maxOrders && FoodNumber != FoodID) {
+        if (f + 1 == maxOrders && FoodNumber != FoodCounter) {
             FoodNumber++;
             count = 0;
             // żeby f == 0;
@@ -137,23 +110,23 @@ void orderList() {
 
 void editOrder() {
     int deleteorderedFood[maxOrders];
-    int forDelete;
+    int keyPressed;
     do {
         cout << endl << "Co trzeba usunac?" << endl << "wpisanie 0 spowoduje przejscie do nastepnego kroku."
             << endl << "Podaj ID: ";
-        cin >> forDelete;
+        cin >> keyPressed;
         for (int i = 0; i < maxOrders; i++) {
-            if (forDelete == 0) break;
-            if (forDelete == orderedFood[i]) {
+            if (keyPressed == 0) break;
+            if (keyPressed == orderedFood[i]) {
                 orderedFood[i] = NULL;
-                cout << endl << "ID " << forDelete << " Usunięto!" << endl;
+                cout << endl << "ID " << keyPressed << " Usunięto!" << endl;
                 break;
             }
             if (i + 1 == maxOrders) {
-                cout << endl << "ID " << forDelete << " nie byl dodany do listy zamowien" << endl;
+                cout << endl << "ID " << keyPressed << " nie byl dodany do listy zamowien" << endl;
             }
         }
-    } while (forDelete != 0);
+    } while (keyPressed != 0);
     orderList();
 }
 
@@ -180,48 +153,33 @@ void confirmOrder() {
 
 void menuContent() {
     menuTop();
-    ifstream menufile(menuPATH);
-    if (!menufile.is_open()) {
-        ofstream newsetupfile(menuPATH);
-        newsetupfile << 'a'; //Zrobic to
-        newsetupfile.close();
-        menufile.open(menuPATH);
-    }
-    Json::Reader reader;
-    Json::Value root;
-    bool parsingSuccessful = reader.parse(menufile, root);
-    if (!parsingSuccessful)
-    {
-        cout << endl << "File not found";
-    }
-    Json::Value types = root["Types"];
-    Json::Value food = root["Food"];
+    Json::Value types = readFromFile(menuPATH)["Types"];
+    Json::Value food = readFromFile(menuPATH)["Food"];
     for (int i = 0; i < types.size(); i++) {
         cout << "| " << types[i].asString();
         for (int g = 0; g < menuWidth - (types[i].asString().size() + 2); g++) cout << " ";
         cout << "|" << endl;
         for (int f = 0; f < food.size(); f++) {
             if (food[f]["type"].asString() == types[i].asString()) {
-                cout << "| " << FoodID << "." << food[f]["name"].asString();
-                FoodID++;
+                FoodCounter++;
+                cout << "| " << FoodCounter << "." << food[f]["name"].asString();
                 dotLine(food[f]["name"].asString().size());
                 cout << food[f]["price"].asFloat() << " |" << endl;
             }
         }
         menuEmptySpace();
     }
-    menufile.close();
-    FoodID--;
     menuBottom();
     cout << endl;
 }
 
 void takeOrder() {
+    confirmRepeat = true;
     menuContent();
     createOrder();
     orderList();
     while (confirmRepeat) {
         confirmOrder();
     }
-    FoodID = 1;
+    FoodCounter = 1;
 }

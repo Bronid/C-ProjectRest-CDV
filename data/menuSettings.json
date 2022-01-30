@@ -1,0 +1,69 @@
+{
+  "Types": [
+    "Burgery",
+    "Pizza",
+    "Napoje"
+  ],
+  "Food": [
+    {
+      "type": "Burgery",
+      "name": "Burger Classic",
+      "price": 19.99
+    },
+    {
+      "type": "Burgery",
+      "name": "Burger Grande",
+      "price": 24.99
+    },
+    {
+      "type": "Burgery",
+      "name": "Burger Giga",
+      "price": 29.99
+    },
+    {
+      "type": "Pizza",
+      "name": "Pizza Serowa",
+      "price": 19.99
+    },
+    {
+      "type": "Pizza",
+      "name": "Pizza ser i szynka",
+      "price": 24.99
+    },
+    {
+      "type": "Pizza",
+      "name": "Pizza ser i pieczarki",
+      "price": 22.99
+    },
+    {
+      "type": "Pizza",
+      "name": "Pizza Wegetariana",
+      "price": 28.89
+    },
+    {
+      "type": "Pizza",
+      "name": "Pizza Salami",
+      "price": 26.32
+    },
+    {
+      "type": "Pizza",
+      "name": "Pizza ser i pieczarki",
+      "price": 28.64
+    },
+    {
+      "type": "Napoje",
+      "name": "Woda",
+      "price": 2.99
+    },
+    {
+      "type": "Napoje",
+      "name": "Cola",
+      "price": 4.99
+    },
+    {
+      "type": "Napoje",
+      "name": "Sok",
+      "price": 3.99
+    }
+  ]
+}
