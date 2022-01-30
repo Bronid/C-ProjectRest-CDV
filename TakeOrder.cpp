@@ -16,6 +16,10 @@ int FoodCounter = 0;
 string menuHeader = " MENU ";
 bool confirmRepeat = true;
 
+void clearOrderedFoodList() {
+    for (int i = 0; i < maxOrders; i++) orderedFood[i] = NULL;
+}
+
 void menuEmptySpace() {
     string emptyLine;
     emptyLine += "|";
@@ -55,34 +59,6 @@ void dotLine(int foodNameSize) {
     }
 }
 
-void createOrder() {
-    cout << "Prosze podac numery id dan jakie maja zostac dodane do zamowienia," << endl
-        << "wpisanie 0 spowoduje przejscie do nastepnego kroku." << endl;
-    int keyPressed;
-    int OrderedFoodAmount = 0;
-    for (int i = 0; i < maxOrders; i++) {
-        cout << endl << "Prosze podac numer id dania: ";
-        cin >> keyPressed;
-        if (keyPressed > FoodCounter || keyPressed < 0) {
-            i--;
-            cout << "Masz do wyboru tylko " << FoodCounter << " dan";
-            continue;
-        }
-        if (keyPressed == 0) {
-            break;
-        }
-        orderedFood[i] = keyPressed;
-        OrderedFoodAmount++;
-    }
-    cout << endl << "Wybrano lacznie " << OrderedFoodAmount << " dan:" << endl;
-}
-
-void endofOrder() {
-    writeToHistoryFile(orderedFood, maxOrders, FoodCounter);
-    //clearing array after all operations
-    for (int i = 0; i < maxOrders; i++) orderedFood[i] = NULL;
-}
-
 void orderList() {
     Json::Value food = readFromFile(menuPATH)["Food"];
     float Sum = 0;
@@ -108,7 +84,62 @@ void orderList() {
     cout << endl << "Suma: " << Sum;
 }
 
-void editOrder() {
+void addToOrder() {
+    cout << "Prosze podac numery id dan jakie maja zostac dodane do zamowienia," << endl
+        << "wpisanie 0 spowoduje przejscie do nastepnego kroku." << endl;
+    int keyPressed;
+    int OrderedFoodAmount = 0;
+    int StartNumber = 0;
+
+    for (int i = 0; i < maxOrders; i++) {
+        if (orderedFood[i] != NULL) {
+            StartNumber++;
+        }
+    }
+
+    for (int i = StartNumber; i < maxOrders; i++) {
+        cout << endl << "Prosze podac numer id dania: ";
+        cin >> keyPressed;
+        if (keyPressed > FoodCounter || keyPressed < 0) {
+            i--;
+            cout << "Masz do wyboru tylko " << FoodCounter << " dan";
+            continue;
+        }
+        if (keyPressed == 0) {
+            break;
+        }
+        orderedFood[i] = keyPressed;
+        OrderedFoodAmount++;
+    }
+    cout << endl << "Dodano lacznie " << OrderedFoodAmount << " dan:" << endl;
+    orderList();
+}
+
+void endofOrder() {
+    writeToHistoryFile(orderedFood, maxOrders, FoodCounter);
+    //clearing array after all operations
+    clearOrderedFoodList();
+    FoodCounter = 0;
+}
+
+void sortOrderedFood() {
+    int tempSortArray[maxOrders];
+    int tempIndex = 0;
+    for (int i = 0; i < maxOrders; i++) {
+        if (orderedFood[i] != NULL) {
+            tempSortArray[tempIndex] = orderedFood[i];
+            tempIndex++;
+        }
+    }
+
+    clearOrderedFoodList();
+
+    for (int i = 0; i < tempIndex; i++) {
+        orderedFood[i] = tempSortArray[i];
+    }
+}
+
+void deleteFromOrder() {
     int deleteorderedFood[maxOrders];
     int keyPressed;
     do {
@@ -127,22 +158,41 @@ void editOrder() {
             }
         }
     } while (keyPressed != 0);
+    sortOrderedFood();
     orderList();
 }
 
+void editOrder() {
+    bool keyIsPressedRight = false;
+        while (!keyIsPressedRight) {
+            char keyPressed;
+            cout << endl << "Wpisz '+' czyli 'Dodac do zamowienia' albo '-' czyli 'Usunac z zamowienia'" <<
+                endl << "Podaj operacje: ";
+            cin >> keyPressed;
+            if (keyPressed == '+') {
+                keyIsPressedRight = true;
+                addToOrder();
+            }
+            if (keyPressed == '-') {
+                keyIsPressedRight = true;
+                deleteFromOrder();
+            }
+        }
+}
+
 void confirmOrder() {
-    bool Confirmation = true;
-    while (Confirmation) {
+    bool isConfirmed = false;
+    while (!isConfirmed) {
         char keyPressed;
         cout << endl << endl << "Potwierdzic zamowienie[T/N]?: ";
         cin >> keyPressed;
         if (keyPressed == 'T' || keyPressed == 't') {
-            Confirmation = false;
+            isConfirmed = true;
             confirmRepeat = false;
             endofOrder();
         }
         else if (keyPressed == 'N' || keyPressed == 'n') {
-            Confirmation = false;
+            isConfirmed = true;
             editOrder();
         }
         else {
@@ -176,10 +226,8 @@ void menuContent() {
 void takeOrder() {
     confirmRepeat = true;
     menuContent();
-    createOrder();
-    orderList();
+    addToOrder();
     while (confirmRepeat) {
         confirmOrder();
     }
-    FoodCounter = 1;
 }

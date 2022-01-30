@@ -9,6 +9,33 @@
 
 using namespace std;
 
+string genRandomID(const int len) {
+    bool isConfirmed = false;
+    static const char alphanum[] =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
+    string tmp_s;
+    do {
+        tmp_s.reserve(len);
+        for (int i = 0; i < len; ++i) {
+            tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
+        }
+        if (readFromFile(historyPATH)["History"].size() != 0) {
+            for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
+                if (readFromFile(historyPATH)["History"][i]["ID"].asString() == tmp_s) {
+                    tmp_s.clear();
+                    break;
+                }
+                if (i + 1 == readFromFile(historyPATH)["History"].size()) isConfirmed = true;
+            }
+        }
+        else {
+            isConfirmed = true;
+        }
+    } while (!isConfirmed);
+    return tmp_s;
+}
+
 string getCurrentDate() {
     string date;
     time_t now = time(0);
@@ -58,7 +85,7 @@ void writeToHistoryFile(int orderedFood[], int MaxOrders, int FoodCounter) {
     for (int i = 0; i < 3; i++) filetext.pop_back();
     Json::Value root;
     root["Date"] = getCurrentDate();
-    root["ID"] = "testid"; // zrob to
+    root["ID"] = genRandomID(10);
     float Sum = 0;
     int FoodNumber = 1;
     int count = 0;

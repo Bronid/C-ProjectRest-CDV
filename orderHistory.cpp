@@ -71,21 +71,80 @@ void draw_emptyspaceforsum() {
     }
 }
 
-void historyList() {
-    for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
+void draw_freespacesum() {
+    cout << "|" << string((historyLengths[7] / 2) + 1, ' ');
+    cout << "-" << string((historyLengths[7] / 2) + 1, ' ');
+    cout << "|" << endl;
+}
+
+void draw_sum(int firstindex) {
+    string numberAsString;
+    stringstream ss;
+    ss << readFromFile(historyPATH)["History"][firstindex][historyVars[7]].asFloat();
+    ss >> numberAsString;
+    int even = 0;
+    if (numberAsString.length() % 2 == 0) even = 1;
+    cout << string((historyLengths[7] / 2) + (historyVars[7].length() / 2) - (numberAsString.length() / 2) + even, ' ');
+
+    cout << numberAsString;
+
+    cout << string((historyLengths[7] / 2) + (historyVars[7].length() / 2) - (numberAsString.length() / 2), ' ');
+
+    cout << "|";
+}
+
+void draw_priceAndN(int firstindex, int indexvar, int secondindex) {
+    string numberAsString;
+    stringstream ss;
+    ss << readFromFile(historyPATH)["History"][firstindex][historyVars[indexvar]][secondindex].asFloat();
+    ss >> numberAsString;
+    int even = 0;
+    if (numberAsString.length() % 2 == 0) even = 1;
+    cout << "|";
+    cout << string((historyLengths[indexvar] / 2) + (historyVars[indexvar].length() / 2) - (numberAsString.length() / 2) + even, ' ');
+
+    cout << numberAsString;
+
+    cout << string((historyLengths[indexvar] / 2) + (historyVars[indexvar].length() / 2) - (numberAsString.length() / 2), ' ');
+}
+
+void draw_food(int firstindex, int secondindex) {
+    int odd = 0;
+    if (readFromFile(historyPATH)["History"][firstindex][historyVars[3]][secondindex].asString().length() % 2 != 0) odd = 1;
+    cout << "|" << string((historyLengths[3] / 2) + (historyVars[3].length() / 2) -
+        (readFromFile(historyPATH)["History"][firstindex][historyVars[3]][secondindex].asString().length() / 2) - odd, ' ');
+    cout << readFromFile(historyPATH)["History"][firstindex][historyVars[3]][secondindex].asString() <<
+        string((historyLengths[3] / 2) + (historyVars[3].length() / 2) -
+            (readFromFile(historyPATH)["History"][firstindex][historyVars[3]][secondindex].asString().length() / 2), ' ');
+}
+
+void draw_numDateID(int firstindex, int indexvar) {
+    if (indexvar == 0) {
         int spaceForNumber = 1;
-        if (i >= 99) spaceForNumber = 2;
+        if (firstindex >= 99) spaceForNumber = 2;
         cout << "|" << string((historyLengths[0] / 2) - spaceForNumber, ' ');
-        if (i < 9) cout << 0;
-        cout << i + 1 << string((historyLengths[0] / 2), ' ');
+        if (firstindex < 9) cout << 0;
+        cout << firstindex + 1 << string((historyLengths[0] / 2), ' ');
+    }
+    else {
+        cout << "|" << string((historyLengths[indexvar] / 2) + (historyVars[indexvar].length() / 2) -
+            (readFromFile(historyPATH)["History"][firstindex][historyVars[indexvar]].asString().length() / 2), ' ');
+        cout << readFromFile(historyPATH)["History"][firstindex][historyVars[indexvar]].asString() <<
+            string((historyLengths[indexvar] / 2) + (historyVars[indexvar].length() / 2) -
+                (readFromFile(historyPATH)["History"][firstindex][historyVars[indexvar]].asString().length() / 2), ' ');
+    }
+}
+
+void historyList(bool isFiltered, string IDorDate) {
+    for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
+
+        if (isFiltered) {
+            if (readFromFile(historyPATH)["History"][i]["ID"].asString() != IDorDate && readFromFile(historyPATH)["History"][i]["Date"].asString() != IDorDate) break;
+        }
 
         // #, Date, ID
-        for (int f = 1; f < 3; f++) {
-            cout << "|" << string((historyLengths[f] / 2) + (historyVars[f].length() / 2) -
-                (readFromFile(historyPATH)["History"][i][historyVars[f]].asString().length() / 2), ' ');
-            cout << readFromFile(historyPATH)["History"][i][historyVars[f]].asString() <<
-                string((historyLengths[f] / 2) + (historyVars[f].length() / 2) -
-                    (readFromFile(historyPATH)["History"][i][historyVars[f]].asString().length() / 2), ' ');
+        for (int f = 0; f < 3; f++) {
+            draw_numDateID(i, f);
         }
 
         for (int a = 0; a < readFromFile(historyPATH)["History"][i]["Food"].size(); a++) {
@@ -93,36 +152,17 @@ void historyList() {
 
                 // Price, N, N*P, 
                 if (f != 3 && f != 7) {
-                    string numberAsString;
-                    stringstream ss;
-                    ss << readFromFile(historyPATH)["History"][i][historyVars[f]][a].asFloat();
-                    ss >> numberAsString;
-                    int even = 0;
-                    if (numberAsString.length() % 2 == 0) even = 1;
-                    cout << "|";
-                    cout << string((historyLengths[f] / 2) + (historyVars[f].length() / 2) - (numberAsString.length() / 2) + even, ' ');
-
-                    cout << numberAsString;
-
-                    cout << string((historyLengths[f] / 2) + (historyVars[f].length() / 2) - (numberAsString.length() / 2), ' ');
+                    draw_priceAndN(i, f, a);
                 }
 
                 // Food
                 if (f == 3) {
-                    int odd = 0;
-                    if (readFromFile(historyPATH)["History"][i][historyVars[f]][a].asString().length() % 2 != 0) odd = 1;
-                    cout << "|" << string((historyLengths[f] / 2) + (historyVars[f].length() / 2) -
-                        (readFromFile(historyPATH)["History"][i][historyVars[f]][a].asString().length() / 2) - odd, ' ');
-                    cout << readFromFile(historyPATH)["History"][i][historyVars[f]][a].asString() <<
-                        string((historyLengths[f] / 2) + (historyVars[f].length() / 2) -
-                            (readFromFile(historyPATH)["History"][i][historyVars[f]][a].asString().length() / 2), ' ');
+                    draw_food(i, a);
                 }
 
-                // Free space from sum "--"
+                // Free space for sum "-"
                 if (f == 7) {
-                    cout << "|" << string((historyLengths[f] / 2) + 1, ' ');
-                    cout << "-" << string((historyLengths[f] / 2) + 1, ' ');
-                    cout << "|" << endl;
+                    draw_freespacesum();
                     break;
                 }      
             }
@@ -130,28 +170,47 @@ void historyList() {
             if (a != readFromFile(historyPATH)["History"][i]["Food"].size() - 1) draw_emptyspace();
         }
         draw_emptyspaceforsum();
-        string numberAsString;
-        stringstream ss;
-        ss << readFromFile(historyPATH)["History"][i][historyVars[7]].asFloat();
-        ss >> numberAsString;
-        int even = 0;
-        if (numberAsString.length() % 2 == 0) even = 1;
-        cout << string((historyLengths[7] / 2) + (historyVars[7].length() / 2) - (numberAsString.length() / 2) + even, ' ');
-
-        cout << numberAsString;
-
-        cout << string((historyLengths[7] / 2) + (historyVars[7].length() / 2) - (numberAsString.length() / 2), ' ');
-
-        cout << "|";
-
+        draw_sum(i);
         cout << endl;
-        
         draw_line();
     }
 }
 
-void orderHistory() {
-    draw_header();
-    historyList();
+void orderHistory(bool isFiltered) {
+    if (isFiltered) {
+        int keyPressed;
+        string IDorDate;
+        do {
+            cout << endl << "Opcje do wyboru:" << endl << "[0] Wyjscie z sortowania" << endl << "[1] Sortowanie po dacie" << endl << "[2] Sortowanie po ID"
+                << endl << endl << "Prosze podac opcje: ";
+            cin >> keyPressed;
+
+            switch (keyPressed) {
+            case 0:
+                break;
+            case 1:
+                cout << endl << "Podaj Date: ";
+                cin >> IDorDate;
+                draw_header();
+                historyList(true, IDorDate);
+                break;
+            case 2:
+                cout << endl << "Podaj ID: ";
+                cin >> IDorDate;
+                draw_header();
+                historyList(true, IDorDate);
+                break;
+            default:
+                cout << endl << "Nie wybrano poprawnej opcji." << endl;
+                break;
+            }
+
+        } while (keyPressed != 0);
+
+    }
+    else {
+        draw_header();
+        historyList(false, "-");
+    }
 }
 

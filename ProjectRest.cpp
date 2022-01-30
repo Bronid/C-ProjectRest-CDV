@@ -31,9 +31,10 @@ int main() {
             takeOrder();
             break;
         case 2:
-            orderHistory();
+            orderHistory(false);
             break;
         case 3:
+            orderHistory(true);
             break;
         default:
             cout << endl << "Nie wybrano poprawnej opcji." << endl;
