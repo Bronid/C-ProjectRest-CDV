@@ -1,9 +1,3 @@
-﻿  orderHistory.cpp
-D:\ProjectRest VS\orderHistory.cpp(13,23): warning C4018: <: несоответствие типов со знаком и без знака
-D:\ProjectRest VS\orderHistory.cpp(15,88): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-D:\ProjectRest VS\orderHistory.cpp(37,46): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-D:\ProjectRest VS\orderHistory.cpp(57,47): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-D:\ProjectRest VS\orderHistory.cpp(68,47): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
-D:\ProjectRest VS\orderHistory.cpp(139,23): warning C4018: <: несоответствие типов со знаком и без знака
-D:\ProjectRest VS\orderHistory.cpp(150,27): warning C4018: <: несоответствие типов со знаком и без знака
+﻿  jsonFunctions.cpp
+D:\ProjectRest VS\jsonFunctions.cpp(24,31): warning C4018: <: несоответствие типов со знаком и без знака
   ProjectRest.vcxproj -> D:\ProjectRest VS\x64\Debug\ProjectRest.exe

@@ -54,13 +54,18 @@ Json::Value readFromFile(string PATH) {
     if (!file.is_open()) {
         ofstream newfile(PATH);
         Json::Value root;
-        Json::StyledStreamWriter writer;
-        if (PATH == setupPATH) writer.write(newfile, root["restaurantName"]);
-        else if (PATH == menuPATH) {
-            writer.write(newfile, root["Types"]);
-            writer.write(newfile, root["Food"]);
+        if (PATH == setupPATH) {
+            newfile << "{" << endl << '"' << "restaurant_name" << '"' << ':' << '"' << "Standard name" << '"' << endl << '}';
         }
-        else if (PATH == historyPATH) writer.write(newfile, root["History"]);
+        else if (PATH == menuPATH) {
+            newfile << "{" << endl << '"' << "Types" << '"' << ':' << ' ' << '[' << endl << ']' << ',' << endl
+                << '"' << "Food" << '"' << ':' << ' ' << '[' << endl << '{' << endl << '"' << "type" << '"' << ':' << '"' << '"' << ',' << endl
+                << '"' << "name" << '"' << ':' << '"' << '"' << ',' << endl << '"' << "price" << '"' << ':' << 0 << endl <<
+                '}' << endl << ']' << endl << '}';
+        }
+        else if (PATH == historyPATH) {
+            newfile << "{" << endl << '"' << "History" << '"' << ':' << '[' << endl << ']' << endl << '}';
+        }
         else {
             cout << "Nie ma takiej sciezki do pliku!";
             return EXIT_FAILURE;
@@ -76,6 +81,7 @@ Json::Value readFromFile(string PATH) {
 }
 
 void writeToHistoryFile(int orderedFood[], int MaxOrders, int FoodCounter) {
+    readFromFile(historyPATH);
     ifstream file(historyPATH);
     string filetext;
     stringstream ss;
