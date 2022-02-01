@@ -4,11 +4,12 @@
 #include <json/value.h>
 #include <json/json.h>
 #include "jsonFunctions.h"
-#include "TakeOrder.h"
+//jest dla pracy getCurrentDate()
 #pragma warning(disable : 4996)
 
 using namespace std;
 
+//generowanie randomowego ID
 string genRandomID(const int len) {
     bool isConfirmed = false;
     static const char alphanum[] =
@@ -21,12 +22,16 @@ string genRandomID(const int len) {
         for (int i = 0; i < len; ++i) {
             tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
         }
+        // jezeli nic w historii nie ma, to wtedy od razu daje ID zamowieniu
         if (readFromFile(historyPATH)["History"].size() != 0) {
+            //sprawdzanie czy jest juz w historii takie same id ktore zostalo wygenerowane
             for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
+                //jezeli jest to clear a dalej wychodzenie z petli
                 if (readFromFile(historyPATH)["History"][i]["ID"].asString() == tmp_s) {
                     tmp_s.clear();
                     break;
                 }
+                // podtwiardzienie tego, ze takiego ID nie istnieje
                 if (i + 1 == readFromFile(historyPATH)["History"].size()) isConfirmed = true;
             }
         }
@@ -37,6 +42,7 @@ string genRandomID(const int len) {
     return tmp_s;
 }
 
+//pobieranie daty
 string getCurrentDate() {
     string date;
     time_t now = time(0);
@@ -84,6 +90,7 @@ Json::Value readFromFile(string PATH) {
     return readedfile;
 }
 
+//zapisywanie danych do pliku historii
 void writeToHistoryFile(int orderedFood[], int MaxOrders, int FoodCounter) {
     readFromFile(historyPATH);
     ifstream file(historyPATH);

@@ -1,11 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
-#include <cstdlib>
-#include <json/value.h>
-#include <json/json.h>
-#include <ctime>
 #include "jsonFunctions.h"
-
 
 using namespace std;
 
@@ -16,10 +11,7 @@ int FoodCounter = 0;
 string menuHeader = readFromFile(setupPATH)["menu_header"].asString();
 bool confirmRepeat = true;
 
-void clearOrderedFoodList() {
-    for (int i = 0; i < maxOrders; i++) orderedFood[i] = NULL;
-}
-
+//GUI ^
 void menuEmptySpace() {
     string emptyLine;
     emptyLine += "|";
@@ -58,7 +50,32 @@ void dotLine(int foodNameSize) {
         cout << ".";
     }
 }
+//GUI v
 
+//czyszczenie listy zamowien
+void clearOrderedFoodList() {
+    for (int i = 0; i < maxOrders; i++) orderedFood[i] = NULL;
+}
+
+//sortowanie listy zamowien
+void sortOrderedFood() {
+    int tempSortArray[maxOrders];
+    int tempIndex = 0;
+    for (int i = 0; i < maxOrders; i++) {
+        if (orderedFood[i] != NULL) {
+            tempSortArray[tempIndex] = orderedFood[i];
+            tempIndex++;
+        }
+    }
+
+    clearOrderedFoodList();
+
+    for (int i = 0; i < tempIndex; i++) {
+        orderedFood[i] = tempSortArray[i];
+    }
+}
+
+//wyswietlanie listy zamowien
 void orderList() {
     Json::Value food = readFromFile(menuPATH)["Food"];
     float Sum = 0;
@@ -84,6 +101,7 @@ void orderList() {
     cout << endl << "Suma: " << Sum;
 }
 
+//dodawanie produktu do listy zamowien
 void addToOrder() {
     cout << "Prosze podac numery id dan jakie maja zostac dodane do zamowienia," << endl
         << "wpisanie 0 spowoduje przejscie do nastepnego kroku." << endl;
@@ -115,30 +133,7 @@ void addToOrder() {
     orderList();
 }
 
-void endofOrder() {
-    writeToHistoryFile(orderedFood, maxOrders, FoodCounter);
-    //clearing array after all operations
-    clearOrderedFoodList();
-    FoodCounter = 0;
-}
-
-void sortOrderedFood() {
-    int tempSortArray[maxOrders];
-    int tempIndex = 0;
-    for (int i = 0; i < maxOrders; i++) {
-        if (orderedFood[i] != NULL) {
-            tempSortArray[tempIndex] = orderedFood[i];
-            tempIndex++;
-        }
-    }
-
-    clearOrderedFoodList();
-
-    for (int i = 0; i < tempIndex; i++) {
-        orderedFood[i] = tempSortArray[i];
-    }
-}
-
+//usuwanie produktu z listy zamowien
 void deleteFromOrder() {
     int deleteorderedFood[maxOrders];
     int keyPressed;
@@ -162,6 +157,15 @@ void deleteFromOrder() {
     orderList();
 }
 
+//koniec zamowienia
+void endofOrder() {
+    writeToHistoryFile(orderedFood, maxOrders, FoodCounter);
+    //clearing array after all operations
+    clearOrderedFoodList();
+    FoodCounter = 0;
+}
+
+//edytowanie listy zamowien
 void editOrder() {
     bool keyIsPressedRight = false;
         while (!keyIsPressedRight) {
@@ -180,6 +184,7 @@ void editOrder() {
         }
 }
 
+//potwierdzanie zamowienia
 void confirmOrder() {
     bool isConfirmed = false;
     while (!isConfirmed) {
@@ -201,6 +206,7 @@ void confirmOrder() {
     }
 }
 
+//wyswietlanie zawartosci menu
 void menuContent() {
     menuTop();
     Json::Value types = readFromFile(menuPATH)["Types"];
@@ -223,6 +229,7 @@ void menuContent() {
     cout << endl;
 }
 
+//glowna funkcja, wypisywanie menu i tworzenie zamowienia
 void takeOrder() {
     confirmRepeat = true;
     menuContent();

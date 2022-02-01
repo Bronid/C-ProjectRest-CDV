@@ -1,13 +1,11 @@
-#include "orderHistory.h"
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <json/value.h>
-#include <json/json.h>
 #include "jsonFunctions.h"
 
 using namespace std;
 
+//pobieranie ilosci liter w nazwie produktu
 int getMaxFoodSize() {
     int MaxFoodSize = 0;
     for (int i = 0; i < readFromFile(menuPATH)["Food"].size(); i++) {
@@ -30,6 +28,7 @@ string historyVars[] = { "#", "Date", "ID", "Food", "Price", "N", "P * N", "Sum"
 int historyLengths[] = { numberLength, dateLength, idLength, foodLength, priceLength, countLength, 
 countMultipliedByPriceLength, sumLength };
 
+//GUI ^
 void draw_line() {
     int lineLenght = 0;
     for (int i = 0; i < 8; i++) {
@@ -76,7 +75,9 @@ void draw_freespacesum() {
     cout << "-" << string((historyLengths[7] / 2) + 1, ' ');
     cout << "|" << endl;
 }
+//GUI v
 
+//pobieranie i wypisywanie (sumy)
 void draw_sum(int firstindex) {
     string numberAsString;
     stringstream ss;
@@ -93,6 +94,7 @@ void draw_sum(int firstindex) {
     cout << "|";
 }
 
+//pobieranie i wypisywanie (ceny, ilosci)
 void draw_priceAndN(int firstindex, int indexvar, int secondindex) {
     string numberAsString;
     stringstream ss;
@@ -108,6 +110,7 @@ void draw_priceAndN(int firstindex, int indexvar, int secondindex) {
     cout << string((historyLengths[indexvar] / 2) + (historyVars[indexvar].length() / 2) - (numberAsString.length() / 2), ' ');
 }
 
+//pobieranie i wypisywanie (produktu)
 void draw_food(int firstindex, int secondindex) {
     int odd = 0;
     if (readFromFile(historyPATH)["History"][firstindex][historyVars[3]][secondindex].asString().length() % 2 != 0) odd = 1;
@@ -118,6 +121,7 @@ void draw_food(int firstindex, int secondindex) {
             (readFromFile(historyPATH)["History"][firstindex][historyVars[3]][secondindex].asString().length() / 2), ' ');
 }
 
+//pobieranie i wypisywanie (numeru, daty, ID)
 void draw_numDateID(int firstindex, int indexvar) {
     if (indexvar == 0) {
         int spaceForNumber = 1;
@@ -135,6 +139,7 @@ void draw_numDateID(int firstindex, int indexvar) {
     }
 }
 
+//wypisywanie historii zamowien
 void historyList(bool isFiltered, string IDorDate) {
     float AllHistorySum = 0;
     for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
@@ -179,6 +184,7 @@ void historyList(bool isFiltered, string IDorDate) {
     cout << "SUMA CALKOWITA: " << AllHistorySum << endl;
 }
 
+//glowna funkcja, pobieranie i wypisywanie dla dnia/ID albo wypisywanie calej historii
 void orderHistory(bool isFiltered) {
     if (isFiltered) {
         int keyPressed;
