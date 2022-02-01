@@ -136,6 +136,7 @@ void draw_numDateID(int firstindex, int indexvar) {
 }
 
 void historyList(bool isFiltered, string IDorDate) {
+    float AllHistorySum = 0;
     for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
 
         if (isFiltered) {
@@ -171,9 +172,11 @@ void historyList(bool isFiltered, string IDorDate) {
         }
         draw_emptyspaceforsum();
         draw_sum(i);
+        AllHistorySum += readFromFile(historyPATH)["History"][i][historyVars[7]].asFloat();
         cout << endl;
         draw_line();
     }
+    cout << "SUMA CALKOWITA: " << AllHistorySum << endl;
 }
 
 void orderHistory(bool isFiltered) {
@@ -181,7 +184,7 @@ void orderHistory(bool isFiltered) {
         int keyPressed;
         string IDorDate;
         do {
-            cout << endl << "Opcje do wyboru:" << endl << "[0] Wyjscie z sortowania" << endl << "[1] Sortowanie po dacie" << endl << "[2] Sortowanie po ID"
+            cout << endl << "Opcje do wyboru:" << endl << "[0] Powrot" << endl << "[1] Historia po dacie" << endl << "[2] Historia po ID"
                 << endl << endl << "Prosze podac opcje: ";
             cin >> keyPressed;
 

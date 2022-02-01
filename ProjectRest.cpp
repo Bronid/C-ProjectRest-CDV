@@ -19,7 +19,7 @@ int main() {
     do {
         cout << endl << "Opcje: " << endl << "[0] Zamkniecie programu" << endl
             << "[1] Zlozenie zamowienia" << endl << "[2] Historia zamowien" << endl
-            << "[3] Historia sortowana" << endl << endl
+            << "[3] Historia zamowien dla danego dnia/ID" << endl << endl
             << "Prosze podac opcje: ";
 
         cin >> keyPressed;

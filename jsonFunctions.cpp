@@ -45,6 +45,7 @@ string getCurrentDate() {
     if (1 + ltm->tm_mon < 10) date += "0";
     date += to_string(1 + ltm->tm_mon);
     date += "-";
+    if (ltm->tm_mday < 10) date += "0";
     date += to_string(ltm->tm_mday);
     return date;
 }

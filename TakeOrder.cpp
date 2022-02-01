@@ -87,7 +87,7 @@ void orderList() {
 void addToOrder() {
     cout << "Prosze podac numery id dan jakie maja zostac dodane do zamowienia," << endl
         << "wpisanie 0 spowoduje przejscie do nastepnego kroku." << endl;
-    int keyPressed;
+    int keyPressed = 0;
     int OrderedFoodAmount = 0;
     int StartNumber = 0;
 
@@ -99,17 +99,17 @@ void addToOrder() {
 
     for (int i = StartNumber; i < maxOrders; i++) {
         cout << endl << "Prosze podac numer id dania: ";
-        cin >> keyPressed;
-        if (keyPressed > FoodCounter || keyPressed < 0) {
-            i--;
-            cout << "Masz do wyboru tylko " << FoodCounter << " dan";
-            continue;
-        }
-        if (keyPressed == 0) {
-            break;
-        }
-        orderedFood[i] = keyPressed;
-        OrderedFoodAmount++;
+            cin >> keyPressed;
+            if (keyPressed > FoodCounter || keyPressed < 0) {
+                i--;
+                cout << "Masz do wyboru tylko " << FoodCounter << " dan";
+                continue;
+            }
+            if (keyPressed == 0) {
+                break;
+            }
+            orderedFood[i] = keyPressed;
+            OrderedFoodAmount++;
     }
     cout << endl << "Dodano lacznie " << OrderedFoodAmount << " dan:" << endl;
     orderList();
