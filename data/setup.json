@@ -1,1 +1,5 @@
-{"restaurant_name":"Rest of Balwany group"}
+{
+	"restaurant_name" : "Rest of Balwany group",
+	"menu_header" : " MENU ",
+	"menu_width" : 40
+}

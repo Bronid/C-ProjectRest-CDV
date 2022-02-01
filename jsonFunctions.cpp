@@ -15,6 +15,7 @@ string genRandomID(const int len) {
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz";
     string tmp_s;
+    srand(time(NULL));
     do {
         tmp_s.reserve(len);
         for (int i = 0; i < len; ++i) {
@@ -56,7 +57,9 @@ Json::Value readFromFile(string PATH) {
         ofstream newfile(PATH);
         Json::Value root;
         if (PATH == setupPATH) {
-            newfile << "{" << endl << '"' << "restaurant_name" << '"' << ':' << '"' << "Standard name" << '"' << endl << '}';
+            newfile << "{" << endl << '"' << "restaurant_name" << '"' << ':' << '"' << "Standard name" << '"' << ','
+                << endl << '"' << "menu_header" << '"' << ':' << '"' << "  MENU  " << '"' << ',' << endl
+                << '"' << "menu_width" << '"' << ':' << ' ' << 40 << endl << '}';
         }
         else if (PATH == menuPATH) {
             newfile << "{" << endl << '"' << "Types" << '"' << ':' << ' ' << '[' << endl << ']' << ',' << endl

@@ -10,10 +10,10 @@
 using namespace std;
 
 const int maxOrders = 10;
-int menuWidth = 40;
+int menuWidth = readFromFile(setupPATH)["menu_width"].asInt();
 int orderedFood[maxOrders];
 int FoodCounter = 0;
-string menuHeader = " MENU ";
+string menuHeader = readFromFile(setupPATH)["menu_header"].asString();
 bool confirmRepeat = true;
 
 void clearOrderedFoodList() {
