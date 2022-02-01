@@ -192,7 +192,7 @@ void orderHistory(bool isFiltered) {
             case 0:
                 break;
             case 1:
-                cout << endl << "Podaj Date: ";
+                cout << endl << "Podaj Date w formie [RRRR-MM-DD]: ";
                 cin >> IDorDate;
                 draw_header();
                 historyList(true, IDorDate);
