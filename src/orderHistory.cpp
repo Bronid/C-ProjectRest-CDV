@@ -144,9 +144,7 @@ void historyList(bool isFiltered, string IDorDate) {
     float AllHistorySum = 0;
     for (int i = 0; i < readFromFile(historyPATH)["History"].size(); i++) {
 
-        if (isFiltered) {
-            if (readFromFile(historyPATH)["History"][i]["ID"].asString() != IDorDate && readFromFile(historyPATH)["History"][i]["Date"].asString() != IDorDate) break;
-        }
+        if (isFiltered && (readFromFile(historyPATH)["History"][i]["ID"].asString() != IDorDate && readFromFile(historyPATH)["History"][i]["Date"].asString() != IDorDate)) continue;
 
         // #, Date, ID
         for (int f = 0; f < 3; f++) {
@@ -170,7 +168,7 @@ void historyList(bool isFiltered, string IDorDate) {
                 if (f == 7) {
                     draw_freespacesum();
                     break;
-                }      
+                }
             }
 
             if (a != readFromFile(historyPATH)["History"][i]["Food"].size() - 1) draw_emptyspace();
