@@ -1,8 +1,22 @@
-﻿  TakeOrder.cpp
-D:\ProjectRest VS\TakeOrder.cpp(91,67): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\ProjectRest VS\TakeOrder.cpp(149,56): warning C4566: символ, представленный универсальным именем символа "\u0119", невозможно представить в текущей кодовой странице (1251)
-D:\ProjectRest VS\TakeOrder.cpp(139,9): warning C4101: deleteorderedFood: неиспользованная локальная переменная
-D:\ProjectRest VS\TakeOrder.cpp(215,23): warning C4018: <: несоответствие типов со знаком и без знака
-D:\ProjectRest VS\TakeOrder.cpp(219,27): warning C4018: <: несоответствие типов со знаком и без знака
-D:\ProjectRest VS\TakeOrder.cpp(223,58): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+﻿  jsoncpp.cpp
+  jsonFunctions.cpp
+D:\ProjectRest VS\src\jsonFunctions.cpp(19,15): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+D:\ProjectRest VS\src\jsonFunctions.cpp(28,31): warning C4018: <: несоответствие типов со знаком и без знака
+  orderHistory.cpp
+D:\ProjectRest VS\src\orderHistory.cpp(11,23): warning C4018: <: несоответствие типов со знаком и без знака
+D:\ProjectRest VS\src\orderHistory.cpp(13,88): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+D:\ProjectRest VS\src\orderHistory.cpp(36,46): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+D:\ProjectRest VS\src\orderHistory.cpp(56,47): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+D:\ProjectRest VS\src\orderHistory.cpp(67,47): warning C4267: +=: преобразование из "size_t" в "int"; возможна потеря данных
+D:\ProjectRest VS\src\orderHistory.cpp(145,23): warning C4018: <: несоответствие типов со знаком и без знака
+D:\ProjectRest VS\src\orderHistory.cpp(156,27): warning C4018: <: несоответствие типов со знаком и без знака
+  ProjectRest.cpp
+  TakeOrder.cpp
+D:\ProjectRest VS\src\TakeOrder.cpp(90,67): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+D:\ProjectRest VS\src\TakeOrder.cpp(148,56): warning C4566: символ, представленный универсальным именем символа "\u0119", невозможно представить в текущей кодовой странице (1251)
+D:\ProjectRest VS\src\TakeOrder.cpp(138,9): warning C4101: deleteorderedFood: неиспользованная локальная переменная
+D:\ProjectRest VS\src\TakeOrder.cpp(214,23): warning C4018: <: несоответствие типов со знаком и без знака
+D:\ProjectRest VS\src\TakeOrder.cpp(218,27): warning C4018: <: несоответствие типов со знаком и без знака
+D:\ProjectRest VS\src\TakeOrder.cpp(222,58): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
+  Создание кода...
   ProjectRest.vcxproj -> D:\ProjectRest VS\x64\Debug\ProjectRest.exe

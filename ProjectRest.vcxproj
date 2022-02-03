@@ -143,18 +143,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="jsoncpp-master\dist\jsoncpp.cpp" />
-    <ClCompile Include="jsonFunctions.cpp" />
-    <ClCompile Include="orderHistory.cpp" />
-    <ClCompile Include="ProjectRest.cpp" />
-    <ClCompile Include="TakeOrder.cpp" />
+    <ClCompile Include="jsoncpp-master\header and cpp files\jsoncpp.cpp" />
+    <ClCompile Include="src\jsonFunctions.cpp" />
+    <ClCompile Include="src\orderHistory.cpp" />
+    <ClCompile Include="src\ProjectRest.cpp" />
+    <ClCompile Include="src\TakeOrder.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="jsoncpp-master\dist\json\json-forwards.h" />
-    <ClInclude Include="jsoncpp-master\dist\json\json.h" />
-    <ClInclude Include="jsonFunctions.h" />
-    <ClInclude Include="orderHistory.h" />
-    <ClInclude Include="TakeOrder.h" />
+    <ClInclude Include="jsoncpp-master\header and cpp files\json\json-forwards.h" />
+    <ClInclude Include="jsoncpp-master\header and cpp files\json\json.h" />
+    <ClInclude Include="src\jsonFunctions.h" />
+    <ClInclude Include="src\orderHistory.h" />
+    <ClInclude Include="src\TakeOrder.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="data\historyList.json" />
+    <None Include="data\menuSettings.json" />
+    <None Include="data\setup.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
